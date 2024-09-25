@@ -29,7 +29,7 @@
 
 想要了解继承，我们还是把目光放回我们的宠物商店…… 宠物商店之前只卖狗，但现在它还卖猫了
 
-![对比](http://api.oo.buaa.edu.cn/image/2024_08_12_23_12_28_38c5bb0984c3e33ecde7cf753b38a8e61b345d91)
+![对比](./image/image1.png)
 
 通过观察，我们发现猫和狗的代码长得几乎一样。他们的属性都包括名字 name，种类 type，价格 price，是否被购买 isBought。同时他们的行为（方法）是高度相近的。如果不对这种情况做修改，就会产生大量重复的不必要的代码。此时正确的做法是：共性提取！
 
@@ -144,7 +144,7 @@ public class Dog extends Animal{
 }
 ```
 
-![image2](http://api.oo.buaa.edu.cn/image/2024_08_12_23_22_46_c3dfd636bd8e40724b5942cc57cfdabb1d103733)
+![image2](./image/image2.png)
 
 我们出现了编译错误！ 这是因为子类无法访问父类被 **private** 修饰的字段或方法，除非使用 **protected** 修饰
 
@@ -560,8 +560,8 @@ Feeding Department gets 9221
 
 | 战力单位 | `CE`数值计算方式 |
 | --- | --- |
-| 冒险者 | CE\=atk+defCE=atk+defCE\=atk+def，即该冒险者的战斗力为其攻击力与防御力之和 |
-| 物品 | 由输入直接指定 CECECE 数值 |
+| 冒险者 | $CE=atk+def$，即该冒险者的战斗力为其攻击力与防御力之和 |
+| 物品 | 由输入直接指定 $CE$ 数值 |
 
 ### 背包限制
 
@@ -587,9 +587,9 @@ Feeding Department gets 9221
 
 | 类型`type` | 意义 |
 | --- | --- |
-| `HpBottle` | 体力恢复药水。若冒险者使用体力恢复药水，则冒险者增加了数值为 capacitycapacitycapacity 的体力。 |
-| `AtkBottle` | 力量药水。若冒险者使用力量药水，则冒险者增加了数值为 药水瓶的CE+?capacity100?{药水瓶的CE} + \\lfloor \\frac{capacity}{100} \\rfloor药水瓶的CE+?100capacity?? 的攻击力。 |
-| `DefBottle` | 敏捷药水。若冒险者使用敏捷药水，则冒险者增加了数值为 药水瓶的CE+?capacity100?{药水瓶的CE} + \\lfloor \\frac{capacity}{100} \\rfloor药水瓶的CE+?100capacity?? 的防御力。 |
+| `HpBottle` | 体力恢复药水。若冒险者使用体力恢复药水，则冒险者增加了数值为 $capacity$ 的体力。 |
+| `AtkBottle` | 力量药水。若冒险者使用力量药水，则冒险者增加了数值为 $药水瓶的CE+\frac{capacity}{100}$ 的攻击力。 |
+| `DefBottle` | 敏捷药水。若冒险者使用敏捷药水，则冒险者增加了数值为 $药水瓶的CE+\frac{capacity}{100}$ 的防御力。 |
 
 ### 操作要求
 
@@ -597,7 +597,7 @@ Feeding Department gets 9221
 
 （**仅指令4不变**）
 
-1.  加入一个需要管理的冒险者（新加入的冒险者不携带任何药水瓶和装备，并且初始体力为 500500500，初始攻击力为 111，初始防御力为 000）
+1.  加入一个需要管理的冒险者（新加入的冒险者不携带任何药水瓶和装备，并且初始体力为 $500$，初始攻击力为 $1$，初始防御力为 $0$）
 2.  给某个冒险者增加一个药水瓶
 3.  给某个冒险者增加一个装备
 4.  给某个冒险者的某个装备提升一点耐久度
@@ -607,22 +607,19 @@ Feeding Department gets 9221
 
 ### 输入输出格式
 
-第一行一个整数 nnn，表示操作的个数。
+第一行一个整数 $n$，表示操作的个数。
 
-接下来的 nnn 行，每行一个形如 `{type} {attribute}` 的操作，`{type}` 和 `{attribute}` 间、若干个 `{attribute}` 间使用**若干**个空格分割，操作输入形式及其含义如下
+接下来的 $n$ 行，每行一个形如 `{type} {attribute}` 的操作，`{type}` 和 `{attribute}` 间、若干个 `{attribute}` 间使用**若干**个空格分割，操作输入形式及其含义如下
 
 | type | attribute | 意义 | 输出（每条对应占一行） |
 | --- | --- | --- | --- |
 | 1 | `{adv_id} {name}` | 加入一个 ID 为 `{adv_id}`、名字为 `{name}` 的冒险者 | 无 |
-| 2 | `{adv_id} {bot_id} {name} {capacity} {type} {CE}` | 给 ID 为 `{adv_id}` 的冒险者增加一个药水瓶，药水瓶的 ID、名字、容量、类型、战斗力分别为 `{bot_id}`、`{name}`、`{capacity}、{type}、{CE}`。特别地，当type为 `HpBottle` 时，保证输入的`CE`为 000 | 无 |
+| 2 | `{adv_id} {bot_id} {name} {capacity} {type} {CE}` | 给 ID 为 `{adv_id}` 的冒险者增加一个药水瓶，药水瓶的 ID、名字、容量、类型、战斗力分别为 `{bot_id}`、`{name}`、`{capacity}、{type}、{CE}`。特别地，当type为 `HpBottle` 时，保证输入的`CE`为 $0$ | 无 |
 | 3 | `{adv_id} {equ_id} {name} {durability} {CE}` | 给 ID 为 `{adv_id}` 的冒险者增加一个装备，装备的 ID、名字、耐久度、战斗力分别为 `{equ_id}`、`{name}`、`{durability}、{CE}` | 无 |
 | 4 | `{adv_id} {equ_id}` | 将 ID 为 `{adv_id}` 的冒险者的 id 为 `{equ_id}` 的装备提升一点耐久度 | `{一个字符串} {一个整数}`，字符串为装备的 **name**，整数为**装备提升耐久后的耐久度** |
-| 5 | `{adv_id} {id}` | 将 ID 为`{adv_id}`的冒险者的 id 为 `{id}` 的物品删除 | `{一个字符串A} {一个字符串B} {一个整数C}`，字符串 A 为物品的类名（答案只能在以下类名中挑选其一： `HpBottle`、`AtkBottle`、`DefBottle`、`Equipment`），字符串 B 为被删除的物品的name  
-若物品为**药水瓶**：整数 C 为删除的药水瓶的容量  
-若物品为**装备**：整数 C 为删除的装备的耐久度 |
+| 5 | `{adv_id} {id}` | 将 ID 为`{adv_id}`的冒险者的 id 为 `{id}` 的物品删除 | `{一个字符串A} {一个字符串B} {一个整数C}`，字符串 A 为物品的类名（答案只能在以下类名中挑选其一： `HpBottle`、`AtkBottle`、`DefBottle`、`Equipment`），字符串 B 为被删除的物品的name<br>若物品为**药水瓶**：整数 C 为删除的药水瓶的容量<br>若物品为**装备**：整数 C 为删除的装备的耐久度 |
 | 6 | `{adv_id} {id}` | ID 为 `{adv_id}` 的冒险者尝试携带 id 为 `{id}` 的物品 | 无 |
-| 7 | `{adv_id} {bot_id}` | ID 为 `{adv_id}` 的冒险者尝试使用他拥有的 id 为`{bot_id}`的药水瓶 | 成功：`{一个字符串} {一个整数A} {一个整数B} {一个整数C}`，字符串为该冒险者的 `name`，整数 A 为该冒险者使用该药水瓶后的体力值，整数 B 为该冒险者使用该药水瓶后的攻击力值，整数 C 为该冒险者使用该药水瓶后的防御力值  
-失败： `{adv_name} fail to use {name}`，`adv_name` 为 ID 为 `adv_id` 的冒险者的 name， `name` 为 ID 为 `bot_id`的药水瓶的 name) |
+| 7 | `{adv_id} {bot_id}` | ID 为 `{adv_id}` 的冒险者尝试使用他拥有的 id 为`{bot_id}`的药水瓶 | 成功：`{一个字符串} {一个整数A} {一个整数B} {一个整数C}`，字符串为该冒险者的 `name`，整数 A 为该冒险者使用该药水瓶后的体力值，整数 B 为该冒险者使用该药水瓶后的攻击力值，整数 C 为该冒险者使用该药水瓶后的防御力值<br>失败： `{adv_name} fail to use {name}`，`adv_name` 为 ID 为 `adv_id` 的冒险者的 name， `name` 为 ID 为 `bot_id`的药水瓶的 name) |
 
 ### 样例
 
@@ -670,8 +667,8 @@ HpBottle bottleName 40
 3.  操作 2-7 保证所有冒险者均已存在
 4.  操作 4-7 保证该冒险者拥有操作中提到 id 的药水瓶或装备
 5.  保证增加的装备、药水瓶原本不存在
-6.  操作数满足 1≤n≤20001\\le n\\le20001≤n≤2000
-7.  操作 2 保证：当 type 为 `HpBottle` 时，输入的 CE 一定为 000
+6.  操作数满足 $1≤n≤2000$
+7.  操作 2 保证：当 type 为 `HpBottle` 时，输入的 CE 一定为 $0$
 8.  操作 7 不保证：提到的药水瓶已被携带
 
 ### 提示
