@@ -1,28 +1,34 @@
-public class Bottle
+public class Bottle extends Item
 {
-    private int id;
-    private String name;
     private int capacity;
+    private boolean empty;
+    private int combatEffectiveness;
     
     public Bottle(int botId, String name, int capacity)
     {
-        this.id = botId;
-        this.name = name;
+        this.setId(botId);
+        this.setName(name);
         this.capacity = capacity;
+        this.empty = false;
     }
     
-    public int getId()
+    public int getCapacity() { return capacity; }
+    
+    public boolean isEmpty() { return empty; }
+    
+    public int getCombatEffectiveness() { return combatEffectiveness; }
+    
+    public void setCombatEffectiveness(int combatEffectiveness)
     {
-        return id;
+        this.combatEffectiveness = combatEffectiveness;
     }
     
-    public String getName()
+    @Override
+    public void information()
     {
-        return name;
+        super.information();
+        System.out.println(capacity);
     }
     
-    public int getCapacity()
-    {
-        return capacity;
-    }
+    public void use(Adventurer adventurer) { empty = true; }
 }
