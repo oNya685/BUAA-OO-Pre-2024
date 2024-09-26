@@ -13,9 +13,7 @@ public class ItemTest
     @Before
     public void setUp()
     {
-        item = new Item();
-        item.setId(114514);
-        item.setName("Something");
+        item = new Item(114514, "Something");
     }
     
     @Test

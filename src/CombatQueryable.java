@@ -1,4 +1,3 @@
-public interface CombatEffectiveness
-{
+public interface CombatQueryable {
     public int getCombatEffectiveness();
 }
