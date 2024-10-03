@@ -1,7 +1,7 @@
 public class Book
 {
-    String name;
-    String magic;
+    private String name;
+    private String magic;
     
     public Book(String name, String magic)
     {
@@ -92,7 +92,6 @@ public class Book
         return jingCount == 0 && numCount > 0 && numCount >= alphCount;
     }
     
-    
     public void addMagic(String magic)
     {
         this.magic += magic;
@@ -100,7 +99,15 @@ public class Book
     
     public void subMagic(int a, int b)
     {
-        if (a > b) { magic = ""; } else if (a >= magic.length()) { magic = ""; } else
+        if (a > b)
+        {
+            magic = "";
+        }
+        else if (a >= magic.length())
+        {
+            magic = "";
+        }
+        else
         {
             magic = magic.substring(a, Integer.min(b + 1, magic.length()));
         }
