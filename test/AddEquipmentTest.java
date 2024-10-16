@@ -92,6 +92,9 @@ public class AddEquipmentTest
                     adventurer.decreaseEquipmentDurability(sword);
                     
                     adventurer.equipItem(axe.getId());
+                    assertNotNull(adventurer.getEquipmentInBackpack("AXE"));
+                    adventurer.getEquipmentInRepository("AXE");
+                    assertEquals(adventurer.isInRepository(axe), true);
                     combat.accept(combatObjects);
                 });
     }

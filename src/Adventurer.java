@@ -215,6 +215,13 @@ public class Adventurer implements CombatQueryable
         return this.repository.stream().filter(item -> item.getId() == itemId).findFirst();
     }
     
+    public Optional<Equipment> getEquipmentInBackpack(String name)
+    {
+        return this.equippedItems.stream().filter(item ->
+                (item instanceof Equipment && item.getName().equals(name))
+        ).map(item -> (Equipment) item).findFirst();
+    }
+    
     public void removeItem(Item item)
     {
         this.repository.remove(item);

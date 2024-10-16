@@ -17,34 +17,39 @@ public class Combat implements Consumer<Object[]>
         
         World.getInstance().getAdventurerById(advId)
                 .ifPresent(attacker ->
-                        attacker.getEquipmentInRepository(name).ifPresent(equipment ->
+                {
+                    attacker.getEquipmentInBackpack(name).orElseGet(() ->
+                    {
+                        System.out.println("Adventurer " + advId + " defeated");
+                        return null;
+                    });
+                    attacker.getEquipmentInBackpack(name).ifPresent(equipment ->
+                    {
+                        ArrayList<Adventurer> targets = new ArrayList<>();
+                        for (int targetId : targetsId)
                         {
-                            ArrayList<Adventurer> targets = new ArrayList<>();
-                            for (int targetId : targetsId)
+                            World.getInstance().getAdventurerById(targetId).
+                                    ifPresent(targets::add);
+                        }
+                        if (
+                                attacker.getAtk() + equipment.getCombatEffectiveness() >
+                                                maxDef(targets)
+                        )
+                        {
+                            equipment.hurt(attacker, targets);
+                            attacker.decreaseEquipmentDurability(equipment);
+                            for (Adventurer eachTarget : targets)
                             {
-                                World.getInstance().getAdventurerById(targetId).
-                                        ifPresent(targets::add);
+                                System.out.println(
+                                        eachTarget.getName() + " " + eachTarget.getHitPoint()
+                                );
                             }
-                            if (
-                                    attacker.isEquipped(equipment) &&
-                                            attacker.getAtk() + equipment.getCombatEffectiveness() >
-                                                    maxDef(targets)
-                            )
-                            {
-                                equipment.hurt(attacker, targets);
-                                attacker.decreaseEquipmentDurability(equipment);
-                                for (Adventurer eachTarget : targets)
-                                {
-                                    System.out.println(
-                                            eachTarget.getName() + " " + eachTarget.getHitPoint()
-                                    );
-                                }
-                            }
-                            else
-                            {
-                                System.out.println("Adventurer " + advId + " defeated");
-                            }
-                        }));
+                        } else
+                        {
+                            System.out.println("Adventurer " + advId + " defeated");
+                        }
+                    });
+                });
     }
     
     private int maxDef(ArrayList<Adventurer> targets)
