@@ -12,15 +12,14 @@ public class AddBottle implements Consumer<Object[]>
         int capacity = ((int) objects[3]);
         String type = ((String) objects[4]);
         int combatEffectiveness = ((int) objects[5]);
+        
         World.getInstance().getAdventurerById(advId)
                 .ifPresent(adventurer ->
-                {
-                    BottleFactory.get(type, botId, name, capacity)
-                            .ifPresent(bottle ->
-                            {
-                                bottle.setCombatEffectiveness(combatEffectiveness);
-                                adventurer.gainItem(bottle);
-                            });
-                });
+                        BottleFactory.get(type, botId, name, capacity)
+                                .ifPresent(bottle ->
+                                {
+                                    bottle.setCombatEffectiveness(combatEffectiveness);
+                                    adventurer.gainItem(bottle);
+                                }));
     }
 }

@@ -11,7 +11,7 @@ public class RemoveItem implements Consumer<Object[]>
         World.getInstance().getAdventurerById(advId)
                 .ifPresent(adventurer ->
                 {
-                    Optional<Item> itemOptional = adventurer.getItemById(itemId);
+                    Optional<Item> itemOptional = adventurer.getItemInRepository(itemId);
                     itemOptional.ifPresent(item ->
                     {
                         item.information();

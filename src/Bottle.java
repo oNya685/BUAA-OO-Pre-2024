@@ -1,6 +1,6 @@
 public class Bottle extends Item implements CombatQueryable
 {
-    private int capacity;
+    private final int capacity;
     private boolean empty;
     private int combatEffectiveness;
     
@@ -43,4 +43,6 @@ public class Bottle extends Item implements CombatQueryable
     {
         empty = true;
     }
+    
+    public void fill() { empty = false; }
 }

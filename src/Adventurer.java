@@ -1,4 +1,6 @@
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Adventurer implements CombatQueryable
@@ -10,6 +12,7 @@ public class Adventurer implements CombatQueryable
     private int def;
     private final HashSet<Item> repository;
     private final HashSet<Item> equippedItems;
+    private final HashMap<String, HashSet<Fragment>> fragments;
     
     public int getId()
     {
@@ -42,6 +45,16 @@ public class Adventurer implements CombatQueryable
         return atk + def;
     }
     
+    public HashMap<String, HashSet<Fragment>> getFragments()
+    {
+        return fragments;
+    }
+    
+    public HashSet<Fragment> getNeededFragments(String fragmentName)
+    {
+        return fragments.get(fragmentName);
+    }
+    
     public void setHitPoint(int hitPoint)
     {
         this.hitPoint = hitPoint;
@@ -52,10 +65,7 @@ public class Adventurer implements CombatQueryable
         this.atk = atk;
     }
     
-    public void setDef(int def)
-    {
-        this.def = def;
-    }
+    public void setDef(int def) { this.def = def; }
     
     public Adventurer(int advId, String name)
     {
@@ -63,6 +73,7 @@ public class Adventurer implements CombatQueryable
         this.name = name;
         this.repository = new HashSet<>();
         this.equippedItems = new HashSet<>();
+        this.fragments = new HashMap<>();
     }
     
     public int getBottleCount()
@@ -75,7 +86,8 @@ public class Adventurer implements CombatQueryable
         if (bottle.isEmpty())
         {
             removeItem(bottle);
-        } else
+        }
+        else
         {
             bottle.use(this);
         }
@@ -88,8 +100,25 @@ public class Adventurer implements CombatQueryable
     
     public void increaseEquipmentDurability(int equId)
     {
-        getEquipmentById(equId).ifPresent(equipment ->
-                equipment.setDurability(equipment.getDurability() + 1));
+        getEquipmentInRepository(equId).ifPresent(this::increaseEquipmentDurability);
+    }
+    
+    public void increaseEquipmentDurability(Equipment equipment)
+    {
+        equipment.setDurability(equipment.getDurability() + 1);
+    }
+    
+    public void decreaseEquipmentDurability(Equipment equipment)
+    {
+        if (equipment.getDurability() > 0)
+        {
+            equipment.setDurability(equipment.getDurability() - 1);
+        }
+        if (equipment.getDurability() == 0)
+        {
+            removeItem(equipment);
+            equipment.die();
+        }
     }
     
     public void gainItem(Item item)
@@ -97,18 +126,62 @@ public class Adventurer implements CombatQueryable
         this.repository.add(item);
     }
     
+    public void gainFragment(String fragmentName, Fragment fragment)
+    {
+        if (!this.fragments.containsKey(fragmentName))
+        {
+            this.fragments.put(fragmentName, new HashSet<>());
+        }
+        this.fragments.get(fragmentName).add(fragment);
+    }
+    
     public void equipItem(int itemID)
     {
         this.repository.stream().filter(item ->
-                item.getId() == itemID).findFirst().ifPresent(this.equippedItems::add);
+                (item.getId() == itemID && !isEquipped(item))
+        ).findFirst().ifPresent(item ->
+        {
+            if (item instanceof Bottle)
+            {
+                equipBottle((Bottle) item);
+            } else if (item instanceof Equipment)
+            {
+                equipEquipment((Equipment) item);
+            }
+        });
     }
     
-    public void equipItem(Item item)
+    private void equipBottle(Bottle bottle)
     {
-        if (this.isInRepository(item))
+        long count = this.equippedItems.stream()
+                .filter(equippedItem ->
+                        (equippedItem instanceof Bottle &&
+                                Objects.equals(equippedItem.getName(), bottle.getName())))
+                .count();
+        if (count < this.getCombatEffectiveness() / 5 + 1)
         {
-            this.equippedItems.add(item);
+            addItemToBackpack(bottle);
         }
+    }
+    
+    public void equipEquipment(Equipment equipment)
+    {
+        this.equippedItems.stream()
+                .filter(equippedItem ->
+                        (equippedItem instanceof Equipment &&
+                                Objects.equals(equippedItem.getName(), equipment.getName())))
+                .findFirst().ifPresent(this::removeItemInBackpack);
+        addItemToBackpack(equipment);
+    }
+    
+    public void addItemToBackpack(Item item)
+    {
+        this.equippedItems.add(item);
+    }
+    
+    public void removeItemInBackpack(Item item)
+    {
+        this.equippedItems.remove(item);
     }
     
     public void removeItemInRepository(Item item)
@@ -123,14 +196,21 @@ public class Adventurer implements CombatQueryable
         ).map(item -> (Bottle) item).findFirst();
     }
     
-    public Optional<Equipment> getEquipmentById(int equId)
+    public Optional<Equipment> getEquipmentInRepository(int equId)
     {
         return this.repository.stream().filter(item ->
                 (item instanceof Equipment && item.getId() == equId)
         ).map(item -> (Equipment) item).findFirst();
     }
     
-    public Optional<Item> getItemById(int itemId)
+    public Optional<Equipment> getEquipmentInRepository(String name)
+    {
+        return this.repository.stream().filter(item ->
+                (item instanceof Equipment && item.getName().equals(name))
+        ).map(item -> (Equipment) item).findFirst();
+    }
+    
+    public Optional<Item> getItemInRepository(int itemId)
     {
         return this.repository.stream().filter(item -> item.getId() == itemId).findFirst();
     }

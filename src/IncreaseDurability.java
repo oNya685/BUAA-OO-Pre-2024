@@ -12,7 +12,7 @@ public class IncreaseDurability implements Consumer<Object[]>
                 .ifPresent(adventurer ->
                 {
                     adventurer.increaseEquipmentDurability(equId);
-                    adventurer.getEquipmentById(equId).ifPresent(equipment ->
+                    adventurer.getEquipmentInRepository(equId).ifPresent(equipment ->
                             System.out.println(equipment.getName() + " " +
                                     equipment.getDurability()));
                 });

@@ -5,9 +5,9 @@ public class Item
     
     public Item(int id, String name)
     {
-        World.getInstance().getItemPool().add(this);
         this.id = id;
         this.name = name;
+        World.getInstance().getItemPool().add(this);
     }
     
     public String getName()
@@ -25,19 +25,16 @@ public class Item
         System.out.print(name + " ");
     }
     
+    public void die() { World.getInstance().die(this); }
+    
     @Override
     public boolean equals(Object obj)
     {
-        if (this == obj)
-        {
-            return true;
-        }
-        
         if (!(obj instanceof Item))
         {
             return false;
         }
-        
+
         return this.id == ((Item) obj).id;
     }
     

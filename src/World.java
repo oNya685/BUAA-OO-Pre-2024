@@ -32,4 +32,9 @@ public class World
     {
         return itemPool;
     }
+    
+    public void die(Item item)
+    {
+        itemPool.remove(item);
+    }
 }

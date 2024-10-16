@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Equipment extends Item implements CombatQueryable
 {
     private int durability;
@@ -33,8 +35,9 @@ public class Equipment extends Item implements CombatQueryable
     @Override
     public void information()
     {
-        System.out.print("Equipment" + " ");
         super.information();
         System.out.println(durability);
     }
+    
+    public void hurt(Adventurer attacker, ArrayList<Adventurer> attacked) { }
 }

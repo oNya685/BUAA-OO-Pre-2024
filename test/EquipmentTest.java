@@ -42,4 +42,11 @@ public class EquipmentTest
         equipment.setCombatEffectiveness(1);
         assertEquals(1, equipment.getCombatEffectiveness());
     }
+    
+    @Test
+    public void information()
+    {
+        EquipmentFactory.get("Axe", 2233, "AXE", 223).ifPresent(Equipment::information);
+        equipment.hurt(new Adventurer(123456, "123"), null);
+    }
 }

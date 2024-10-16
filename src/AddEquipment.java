@@ -9,14 +9,16 @@ public class AddEquipment implements Consumer<Object[]>
         int equId = ((int) objects[1]);
         String name = ((String) objects[2]);
         int durability = ((int) objects[3]);
-        int combatEffectiveness = ((int) objects[4]);
+        String type = ((String) objects[4]);
+        int combatEffectiveness = ((int) objects[5]);
         
         World.getInstance().getAdventurerById(advId)
                 .ifPresent(adventurer ->
-                {
-                    Equipment newEquipment = new Equipment(equId, name, durability);
-                    newEquipment.setCombatEffectiveness(combatEffectiveness);
-                    adventurer.gainItem(newEquipment);
-                });
+                        EquipmentFactory.get(type, equId, name, durability)
+                                .ifPresent(equipment ->
+                                {
+                                    equipment.setCombatEffectiveness(combatEffectiveness);
+                                    adventurer.gainItem(equipment);
+                                }));
     }
 }

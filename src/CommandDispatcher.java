@@ -9,7 +9,7 @@ public class CommandDispatcher
     
     static
     {
-        register(CommandExecutor.builder()
+        register(CertainCommandExecutor.builder()
                 .whenTrigger(1)
                 .thenInteger()
                 .thenLiteral()
@@ -17,7 +17,7 @@ public class CommandDispatcher
                 .build()
         );
         
-        register(CommandExecutor.builder()
+        register(CertainCommandExecutor.builder()
                 .whenTrigger(2)
                 .thenInteger()
                 .thenInteger()
@@ -28,44 +28,68 @@ public class CommandDispatcher
                 .thenAct(new AddBottle())
                 .build());
         
-        register(CommandExecutor.builder()
+        register(CertainCommandExecutor.builder()
                 .whenTrigger(3)
                 .thenInteger()
                 .thenInteger()
                 .thenLiteral()
                 .thenInteger()
+                .thenLiteral()
                 .thenInteger()
                 .thenAct(new AddEquipment())
                 .build());
         
-        register(CommandExecutor.builder()
+        register(CertainCommandExecutor.builder()
                 .whenTrigger(4)
                 .thenInteger()
                 .thenInteger()
                 .thenAct(new IncreaseDurability())
                 .build());
         
-        register(CommandExecutor.builder()
+        register(CertainCommandExecutor.builder()
                 .whenTrigger(5)
                 .thenInteger()
                 .thenInteger()
                 .thenAct(new RemoveItem())
                 .build());
         
-        register(CommandExecutor.builder()
+        register(CertainCommandExecutor.builder()
                 .whenTrigger(6)
                 .thenInteger()
                 .thenInteger()
                 .thenAct(new EquipItem())
                 .build());
         
-        register(CommandExecutor.builder()
+        register(CertainCommandExecutor.builder()
                 .whenTrigger(7)
                 .thenInteger()
                 .thenInteger()
                 .thenAct(new UseBottle())
                 .build());
         
+        register(CertainCommandExecutor.builder()
+                .whenTrigger(8)
+                .thenInteger()
+                .thenInteger()
+                .thenLiteral()
+                .thenAct(new AddFragment())
+                .build());
+        
+        register(CertainCommandExecutor.builder()
+                .whenTrigger(9)
+                .thenInteger()
+                .thenLiteral()
+                .thenInteger()
+                .thenAct(new RedeemWelfare())
+                .build());
+        
+        register(CertainCommandExecutor.builder()
+                .whenTrigger(10)
+                .thenInteger()
+                .thenLiteral()
+                .thenInteger()
+                .thenAct(new Combat())
+                .build());
     }
     
     private static void register(CommandExecutor command)
