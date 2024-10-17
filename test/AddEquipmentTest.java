@@ -91,6 +91,7 @@ public class AddEquipmentTest
                     adventurer.decreaseEquipmentDurability(sword);
                     adventurer.decreaseEquipmentDurability(sword);
                     
+                    adventurer.gainItem(axe);
                     adventurer.equipItem(axe.getId());
                     assertNotNull(adventurer.getEquipmentInBackpack("AXE"));
                     adventurer.getEquipmentInRepository("AXE");
